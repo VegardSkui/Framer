@@ -35,6 +35,12 @@ enum Devices: Device, CaseIterable {
             device.name == name
         }
     }
+    
+    static func findBy(screenSize: CGSize) -> Device? {
+        Devices.allCases.first { device in
+            device.screen.size == screenSize
+        }
+    }
 }
 
 protocol Device {

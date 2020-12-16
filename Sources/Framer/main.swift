@@ -19,7 +19,7 @@ struct Framer: ParsableCommand {
         }
         return device
     })
-    var device: Device
+    var device: Device?
     
     @Argument(help: "PNG screenshots to frame.")
     var path: String
@@ -38,6 +38,20 @@ struct Framer: ParsableCommand {
             throw ExitCode.failure
         }
         
+        // Automatically detect the correct device based on the screenshot's
+        // size, if not provided by the user
+        let device: Device
+        if self.device == nil {
+            let screenshotSize = CGSize(width: screenshot.width, height: screenshot.height)
+            guard let detectedDevice = Devices.findBy(screenSize: screenshotSize) else {
+                print("Could not detect device based on screenshot size.")
+                throw ExitCode.failure
+            }
+            device = detectedDevice
+        } else {
+            device = self.device!
+        }
+        
         guard let framer = ScreenshotFramer(for: device) else {
             print("Could not create screenshot framer.")
             throw ExitCode.failure
@@ -54,7 +68,7 @@ struct Framer: ParsableCommand {
         
         try save(image: result, to: destinationPath)
         
-        print("Framed screenshot successfully saved to '\(destinationPath)'.")
+        print("Framed '\(device.name)' screenshot saved to '\(destinationPath)'.")
     }
     
     func loadImage(at path: String) -> CGImage? {
