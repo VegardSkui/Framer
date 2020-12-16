@@ -13,7 +13,7 @@ enum Devices: Device, CaseIterable {
     case iphone12mini
     case iphone12pro
     case iphone12promax
-    
+
     var name: String {
         switch self {
         case .iphone12:
@@ -26,7 +26,7 @@ enum Devices: Device, CaseIterable {
             return "iPhone 12 Pro Max"
         }
     }
-    
+
     var screen: CGRect {
         switch self {
         case .iphone12:
@@ -39,13 +39,13 @@ enum Devices: Device, CaseIterable {
             return CGRect(x: 100, y: 100, width: 1284, height: 2778)
         }
     }
-    
+
     static func findBy(name: String) -> Device? {
         Devices.allCases.first { device in
             device.name == name
         }
     }
-    
+
     static func findBy(screenSize: CGSize) -> Device? {
         Devices.allCases.first { device in
             device.screen.size == screenSize
@@ -56,7 +56,7 @@ enum Devices: Device, CaseIterable {
 protocol Device {
     /// The device's name.
     var name: String { get }
-    
+
     /// The rectangle describing the size and position of the device's screen in
     /// pixels (not points).
     var screen: CGRect { get }

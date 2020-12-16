@@ -11,7 +11,7 @@ import Foundation
 enum FramingError: Error, CustomStringConvertible {
     case internalError(String)
     case wrongDimensions
-    
+
     var description: String {
         switch self {
         case .internalError(let error):
@@ -24,15 +24,15 @@ enum FramingError: Error, CustomStringConvertible {
 
 class ScreenshotFramer {
     let device: Device
-    
+
     let frame: CGImage
-    
+
     init?(for device: Device) {
         guard let frameURL = Bundle.module.url(forResource: device.name,
                                                withExtension: "png") else {
             return nil
         }
-        
+
         guard let provider = CGDataProvider(url: frameURL as CFURL) else {
             return nil
         }
@@ -42,7 +42,7 @@ class ScreenshotFramer {
                                   intent: .defaultIntent) else {
             return nil
         }
-        
+
         self.device = device
         self.frame = frame
     }
@@ -53,13 +53,13 @@ class ScreenshotFramer {
         if screenshot.width != Int(device.screen.width) || screenshot.height != Int(device.screen.height) {
             print("Warning: Screenshot dimensions do not match device screen size.")
         }
-        
+
         guard let colorSpace = CGColorSpace(name: CGColorSpace.sRGB) else {
             throw FramingError.internalError("Could not initialize color space.")
         }
-    
+
         let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue & CGBitmapInfo.alphaInfoMask.rawValue
-        
+
         guard let context = CGContext(data: nil,
                                       width: frame.width,
                                       height: frame.height,
@@ -69,10 +69,10 @@ class ScreenshotFramer {
                                       bitmapInfo: bitmapInfo) else {
             throw FramingError.internalError("Could not create CGContext.")
         }
-        
+
         // Draw the screenshot first to make sure it's underneath any notch
         context.draw(screenshot, in: device.screen)
-        
+
         // The corner radius of the iPhone 12 Pro Max is big enough that the
         // corners of the screenshots protrudes outside the device frame, we
         // therefore have to clear them manually
@@ -82,10 +82,10 @@ class ScreenshotFramer {
             context.clear(CGRect(x: device.screen.minX, y: device.screen.maxY - 5, width: 5, height: 5))
             context.clear(CGRect(x: device.screen.maxX - 5, y: device.screen.maxY - 5, width: 5, height: 5))
         }
-        
+
         let frameRect = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         context.draw(frame, in: frameRect)
-        
+
         guard let result = context.makeImage() else {
             throw FramingError.internalError("makeImage() failed.")
         }
