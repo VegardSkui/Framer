@@ -9,11 +9,17 @@
 import Foundation
 
 enum Devices: Device, CaseIterable {
+    case iphone12
+    case iphone12mini
     case iphone12pro
     case iphone12promax
     
     var name: String {
         switch self {
+        case .iphone12:
+            return "iPhone 12"
+        case .iphone12mini:
+            return "iPhone 12 mini"
         case .iphone12pro:
             return "iPhone 12 Pro"
         case .iphone12promax:
@@ -23,6 +29,10 @@ enum Devices: Device, CaseIterable {
     
     var screen: CGRect {
         switch self {
+        case .iphone12:
+            return CGRect(x: 100, y: 90, width: 1170, height: 2532)
+        case .iphone12mini:
+            return CGRect(x: 100, y: 90, width: 1125, height: 2436)
         case .iphone12pro:
             return CGRect(x: 100, y: 90, width: 1170, height: 2532)
         case .iphone12promax:
