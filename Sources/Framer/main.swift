@@ -21,7 +21,7 @@ struct Framer: ParsableCommand {
     })
     var device: Device?
     
-    @Argument(help: "PNG screenshots to frame.")
+    @Argument(help: "PNG screenshot to frame.")
     var path: String
     
     func run() throws {
