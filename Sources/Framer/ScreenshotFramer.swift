@@ -72,6 +72,17 @@ class ScreenshotFramer {
         
         // Draw the screenshot first to make sure it's underneath any notch
         context.draw(screenshot, in: device.screen)
+        
+        // The corner radius of the iPhone 12 Pro Max is big enough that the
+        // corners of the screenshots protrudes outside the device frame, we
+        // therefore have to clear them manually
+        if device.name == Devices.iphone12promax.name {
+            context.clear(CGRect(x: device.screen.minX, y: device.screen.minY, width: 5, height: 5))
+            context.clear(CGRect(x: device.screen.maxX - 5, y: device.screen.minY, width: 5, height: 5))
+            context.clear(CGRect(x: device.screen.minX, y: device.screen.maxY - 5, width: 5, height: 5))
+            context.clear(CGRect(x: device.screen.maxX - 5, y: device.screen.maxY - 5, width: 5, height: 5))
+        }
+        
         let frameRect = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         context.draw(frame, in: frameRect)
         
