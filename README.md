@@ -2,6 +2,8 @@
 
 A macOS command line tool to wrap screenshots from Apple devices in device frames.
 
+![Example](Example.png)
+
 The correct device is detected automatically based on the screenshot dimensions, if not set manually by the user.
 
 Inspired by the [Apple Frames](https://www.macstories.net/shortcuts/) shortcut for iOS and iPadOS by Federico Viticci at [MacStories](https://www.macstories.net).
