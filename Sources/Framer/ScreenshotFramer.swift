@@ -10,14 +10,11 @@ import Foundation
 
 enum FramingError: Error, CustomStringConvertible {
     case internalError(String)
-    case wrongDimensions
 
     var description: String {
         switch self {
         case .internalError(let error):
             return "Internal framing error: \(error)"
-        case .wrongDimensions:
-            return "Wrong dimensions."
         }
     }
 }
