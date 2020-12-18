@@ -10,7 +10,7 @@ import Foundation
 import ArgumentParser
 
 struct Framer: ParsableCommand {
-    static var configuration = CommandConfiguration(abstract: "Add device frames to screenshots")
+    static var configuration = CommandConfiguration(abstract: "Add device frames to screenshots", version: "0.1")
 
     @Flag(help: "List available devices.")
     var listDevices = false
