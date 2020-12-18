@@ -21,6 +21,9 @@ struct Framer: ParsableCommand {
     })
     var device: Device?
 
+    @Option(name: .shortAndLong, help: "Override default output path.")
+    var output: String?
+
     @Argument(help: "PNG screenshot to frame.")
     var path: String
 
@@ -59,12 +62,7 @@ struct Framer: ParsableCommand {
 
         let result = try framer.frame(screenshot)
 
-        let destinationPath: String
-        if path.hasSuffix(".png") {
-            destinationPath = "\(path.dropLast(4))-framed.png"
-        } else {
-            destinationPath = "\(path)-framed.png"
-        }
+        let destinationPath = getDestinationPath()
 
         try save(image: result, to: destinationPath)
 
@@ -99,6 +97,30 @@ struct Framer: ParsableCommand {
         if !success {
             print("Could not save image.")
             throw ExitCode.failure
+        }
+    }
+
+    func getDestinationPath() -> String {
+        let filename: String
+        if path.lowercased().hasSuffix(".png") {
+            filename = "\(path.dropLast(4))-framed.png"
+        } else {
+            filename = "\(path)-framed.png"
+        }
+
+        if let output = output {
+            var url = URL(fileURLWithPath: output)
+
+            // If the user manually pointed to a directory, append the generated
+            // filename, if not, just use the path provided
+            if url.hasDirectoryPath {
+                url.appendPathComponent(filename)
+            }
+            return url.path
+        } else {
+            // Use the generated filename and place the file in the same
+            // directory if the user did not specify an output
+            return filename
         }
     }
 }
