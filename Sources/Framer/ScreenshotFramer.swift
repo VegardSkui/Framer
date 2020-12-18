@@ -94,7 +94,9 @@ class ScreenshotFramer {
         // 0xFF will be removed and 0x00 will be retained.
         var pixelData = [UInt8](repeating: 0, count: frame.width * frame.height)
 
-        guard let colorSpace = CGColorSpace(name: CGColorSpace.linearGray) else { return nil }
+        guard let colorSpace = CGColorSpace(name: CGColorSpace.linearGray) else {
+            return nil
+        }
 
         guard let context = CGContext(data: &pixelData,
                                       width: frame.width,
@@ -102,7 +104,9 @@ class ScreenshotFramer {
                                       bitsPerComponent: 8,
                                       bytesPerRow: frame.width,
                                       space: colorSpace,
-                                      bitmapInfo: CGImageAlphaInfo.alphaOnly.rawValue) else { return nil }
+                                      bitmapInfo: CGImageAlphaInfo.alphaOnly.rawValue) else {
+            return nil
+        }
 
         let rect = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         context.draw(frame, in: rect)
@@ -152,7 +156,9 @@ class ScreenshotFramer {
 
         // After processing is complete, create a masking image from the data in
         // the context
-        guard let provider = context.makeImage()?.dataProvider else { return nil }
+        guard let provider = context.makeImage()?.dataProvider else {
+            return nil
+        }
 
         return CGImage(maskWidth: frame.width,
                        height: frame.height,
