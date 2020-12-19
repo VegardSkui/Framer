@@ -112,8 +112,10 @@ extension Devices {
 
     public static func findBy(screenSize: CGSize) -> (Device, DeviceOrientation)? {
         for device in Devices.allCases {
-            for (orientation, rect) in device.screen {
-                if rect.size == screenSize {
+            // We check every device orientation such that we get them in our
+            // preffered order (ex. portrait before upsideDown)
+            for orientation in DeviceOrientation.allCases {
+                if device.screen[orientation]?.size == screenSize {
                     return (device, orientation)
                 }
             }
@@ -168,7 +170,9 @@ public protocol Device {
 
 extension Device {
     public func findOrientationBy(screenSize: CGSize) -> DeviceOrientation? {
-        for orientation in supportedOrientations {
+        // We check every device orientation such that we get them in our
+        // preffered order (ex. portrait before upsideDown)
+        for orientation in DeviceOrientation.allCases {
             if screen[orientation]?.size == screenSize {
                 return orientation
             }
@@ -177,7 +181,9 @@ extension Device {
     }
 }
 
-public enum DeviceOrientation: String {
+public enum DeviceOrientation: String, CaseIterable {
+    // Orientations should be listed in order of preference
+
     case portrait
     case upsideDown
     case landscapeLeft
