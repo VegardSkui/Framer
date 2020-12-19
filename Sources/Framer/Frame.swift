@@ -14,7 +14,9 @@ struct Frame: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: "Add device frames to screenshots.",
         discussion: """
-        Use 'framer list-devices -r' to list all available devices and their supported orientations.
+        If not specified manually, the program tries to detect the correct device and
+        orientation automatically based on the dimensions of the input image.
+        Use 'framer list-devices -r' to list all available devices and orientations.
         """
     )
 
