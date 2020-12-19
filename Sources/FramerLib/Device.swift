@@ -144,7 +144,7 @@ public protocol Device {
     var frame: [DeviceOrientation: CGImage?] { get }
 }
 
-public enum DeviceOrientation {
+public enum DeviceOrientation: String {
     case portrait
     case landscapeLeft
 

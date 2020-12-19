@@ -34,7 +34,8 @@ struct Framer: ParsableCommand {
         if listDevices {
             // List each device name on their own line and exit
             Devices.allCases.forEach { device in
-                print(device.name)
+                let orientations = device.supportedOrientations.map({ $0.rawValue }).joined(separator: ", ")
+                print("\(device.name) (\(orientations))")
             }
             throw ExitCode.success
         }
