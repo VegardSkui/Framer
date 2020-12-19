@@ -10,7 +10,7 @@ import ArgumentParser
 
 struct Framer: ParsableCommand {
     static var configuration = CommandConfiguration(
-        version: "0.1",
+        version: "0.2",
         subcommands: [Frame.self, ListDevices.self],
         defaultSubcommand: Frame.self
     )
