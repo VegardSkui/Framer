@@ -34,13 +34,13 @@ public enum Devices: Device, CaseIterable {
     public var supportedOrientations: [DeviceOrientation] {
         switch self {
         case .iphone12:
-            return [.portrait]
+            return [.portrait, .upsideDown, .landscapeLeft, .landscapeRight]
         case .iphone12mini:
-            return [.portrait]
+            return [.portrait, .upsideDown, .landscapeLeft, .landscapeRight]
         case .iphone12pro:
-            return [.portrait]
+            return [.portrait, .upsideDown, .landscapeLeft, .landscapeRight]
         case .iphone12promax:
-            return [.portrait, .landscapeLeft]
+            return [.portrait, .upsideDown, .landscapeLeft, .landscapeRight]
         case .watch6_44mm:
             return [.standard]
         }
@@ -49,14 +49,25 @@ public enum Devices: Device, CaseIterable {
     public var screen: [DeviceOrientation: CGRect] {
         switch self {
         case .iphone12:
-            return [.portrait: CGRect(x: 100, y: 90, width: 1170, height: 2532)]
+            return [.portrait: CGRect(x: 100, y: 90, width: 1170, height: 2532),
+                    .upsideDown: CGRect(x: 100, y: 90, width: 1170, height: 2532),
+                    .landscapeLeft: CGRect(x: 90, y: 100, width: 2532, height: 1170),
+                    .landscapeRight: CGRect(x: 90, y: 100, width: 2532, height: 1170)]
         case .iphone12mini:
-            return [.portrait: CGRect(x: 100, y: 90, width: 1125, height: 2436)]
+            return [.portrait: CGRect(x: 100, y: 90, width: 1125, height: 2436),
+                    .upsideDown: CGRect(x: 100, y: 90, width: 1125, height: 2436),
+                    .landscapeLeft: CGRect(x: 90, y: 100, width: 2436, height: 1125),
+                    .landscapeRight: CGRect(x: 90, y: 100, width: 2436, height: 1125)]
         case .iphone12pro:
-            return [.portrait: CGRect(x: 100, y: 90, width: 1170, height: 2532)]
+            return [.portrait: CGRect(x: 100, y: 90, width: 1170, height: 2532),
+                    .upsideDown: CGRect(x: 100, y: 90, width: 1170, height: 2532),
+                    .landscapeLeft: CGRect(x: 90, y: 100, width: 2532, height: 1170),
+                    .landscapeRight: CGRect(x: 90, y: 100, width: 2532, height: 1170)]
         case .iphone12promax:
             return [.portrait: CGRect(x: 100, y: 100, width: 1284, height: 2778),
-                    .landscapeLeft: CGRect(x: 100, y: 100, width: 2778, height: 1284)]
+                    .upsideDown: CGRect(x: 100, y: 100, width: 1284, height: 2778),
+                    .landscapeLeft: CGRect(x: 100, y: 100, width: 2778, height: 1284),
+                    .landscapeRight: CGRect(x: 100, y: 100, width: 2778, height: 1284)]
         case .watch6_44mm:
             return [.standard: CGRect(x: 56, y: 205, width: 368, height: 448)]
         }
@@ -65,14 +76,25 @@ public enum Devices: Device, CaseIterable {
     public var frame: [DeviceOrientation: CGImage?] {
         switch self {
         case .iphone12:
-            return [.portrait: getDeviceFrame(name)]
+            return [.portrait: getDeviceFrame(name),
+                    .upsideDown: getDeviceFrame(name, rotation: .down),
+                    .landscapeLeft: getDeviceFrame(name, rotation: .left),
+                    .landscapeRight: getDeviceFrame(name, rotation: .right)]
         case .iphone12mini:
-            return [.portrait: getDeviceFrame(name)]
+            return [.portrait: getDeviceFrame(name),
+                    .upsideDown: getDeviceFrame(name, rotation: .down),
+                    .landscapeLeft: getDeviceFrame(name, rotation: .left),
+                    .landscapeRight: getDeviceFrame(name, rotation: .right)]
         case .iphone12pro:
-            return [.portrait: getDeviceFrame(name)]
+            return [.portrait: getDeviceFrame(name),
+                    .upsideDown: getDeviceFrame(name, rotation: .down),
+                    .landscapeLeft: getDeviceFrame(name, rotation: .left),
+                    .landscapeRight: getDeviceFrame(name, rotation: .right)]
         case .iphone12promax:
             return [.portrait: getDeviceFrame(name),
-                    .landscapeLeft: getDeviceFrame(name, rotation: .left)]
+                    .upsideDown: getDeviceFrame(name, rotation: .down),
+                    .landscapeLeft: getDeviceFrame(name, rotation: .left),
+                    .landscapeRight: getDeviceFrame(name, rotation: .right)]
         case .watch6_44mm:
             return [.standard: getDeviceFrame(name)]
         }
@@ -157,7 +179,9 @@ extension Device {
 
 public enum DeviceOrientation: String {
     case portrait
+    case upsideDown
     case landscapeLeft
+    case landscapeRight
 
     /// Standard orientation for devices where only one orientation is supported.
     case standard
