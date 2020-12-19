@@ -7,22 +7,23 @@ let package = Package(
     name: "Framer",
     platforms: [.macOS(.v10_13)],
     products: [
-        .executable(name: "framer", targets: ["Framer"])
+        .executable(name: "framer", targets: ["Framer"]),
+        .library(name: "FramerLib", targets: ["FramerLib"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.3.0"))
+        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.3.0")),
     ],
     targets: [
         .target(
             name: "Framer",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
-            ],
-            resources: [.copy("Resources")]
-        ),
+                "FramerLib",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")]),
+        .target(
+            name: "FramerLib",
+            resources: [.copy("Resources")]),
         .testTarget(
             name: "FramerTests",
-            dependencies: ["Framer"]
-        )
+            dependencies: ["FramerLib"]),
     ]
 )

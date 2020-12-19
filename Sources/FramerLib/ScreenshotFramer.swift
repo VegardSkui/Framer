@@ -1,6 +1,6 @@
 //
 //  ScreenshotFramer.swift
-//  Framer
+//  FramerLib
 //
 //  Created by Vegard Skui on 16/12/2020.
 //  Copyright © 2020 Vegard Skui. All rights reserved.
@@ -19,12 +19,12 @@ enum FramingError: Error, CustomStringConvertible {
     }
 }
 
-class ScreenshotFramer {
+public class ScreenshotFramer {
     let device: Device
 
     let frame: CGImage
 
-    init?(for device: Device) {
+    public init?(for device: Device) {
         guard let frameURL = Bundle.module.url(forResource: device.name,
                                                withExtension: "png") else {
             return nil
@@ -44,7 +44,7 @@ class ScreenshotFramer {
         self.frame = frame
     }
 
-    func frame(_ screenshot: CGImage) throws -> CGImage {
+    public func frame(_ screenshot: CGImage) throws -> CGImage {
         // Warn the user if the screenshot dimensions don't match the device's
         // screen size
         if screenshot.width != Int(device.screen.width) || screenshot.height != Int(device.screen.height) {
