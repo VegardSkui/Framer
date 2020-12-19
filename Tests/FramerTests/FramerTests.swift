@@ -7,9 +7,18 @@
 //
 
 import XCTest
+@testable import FramerLib
 
 final class FramerTests: XCTestCase {
-    func testExample() throws {
-        XCTAssertTrue(true)
+    func testFindDeviceByName() throws {
+        let result = Devices.findBy(name: "iPhone 12")
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.screen, Devices.iphone12.screen)
+    }
+
+    func testFindDeviceBySize() throws {
+        let result = Devices.findBy(screenSize: CGSize(width: 1284, height: 2778))
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.name, "iPhone 12 Pro Max")
     }
 }
