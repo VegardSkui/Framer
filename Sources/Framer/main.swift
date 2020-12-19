@@ -24,6 +24,9 @@ struct Framer: ParsableCommand {
     })
     var device: Device?
 
+    @Option(name: [.customShort("r"), .long])
+    var orientation: DeviceOrientation?
+
     @Option(name: .shortAndLong, help: "Override default output path.")
     var output: String?
 
@@ -50,6 +53,10 @@ struct Framer: ParsableCommand {
         let device: Device
         let orientation: DeviceOrientation
         if self.device == nil {
+            if self.orientation != nil {
+                print("Warning: --orientation option is ignored since --device is not set.")
+            }
+
             let screenshotSize = CGSize(width: screenshot.width, height: screenshot.height)
             guard let detectedDevice = Devices.findBy(screenSize: screenshotSize) else {
                 print("Could not detect device based on screenshot size.")
@@ -59,7 +66,22 @@ struct Framer: ParsableCommand {
             orientation = detectedDevice.1
         } else {
             device = self.device!
-            orientation = self.device!.supportedOrientations.first!
+
+            if self.orientation == nil {
+                let screenshotSize = CGSize(width: screenshot.width, height: screenshot.height)
+                if let detectedOrientation = device.findOrientationBy(screenSize: screenshotSize) {
+                    orientation = detectedOrientation
+                } else {
+                    print("Warning: Could not detect orientation based on screenshot size, result may be wrong.")
+                    orientation = self.device!.supportedOrientations.first!
+                }
+            } else {
+                orientation = self.orientation!
+                if !device.supportedOrientations.contains(orientation) {
+                    print("Error: Orientation '\(orientation)' is not supported for '\(device.name)'.")
+                    throw ExitCode.validationFailure
+                }
+            }
         }
 
         guard let framer = ScreenshotFramer(for: device, orientation: orientation) else {
@@ -133,3 +155,5 @@ struct Framer: ParsableCommand {
 }
 
 Framer.main()
+
+extension DeviceOrientation: ExpressibleByArgument {}

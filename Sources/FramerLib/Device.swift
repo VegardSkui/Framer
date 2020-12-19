@@ -144,6 +144,17 @@ public protocol Device {
     var frame: [DeviceOrientation: CGImage?] { get }
 }
 
+extension Device {
+    public func findOrientationBy(screenSize: CGSize) -> DeviceOrientation? {
+        for orientation in supportedOrientations {
+            if screen[orientation]?.size == screenSize {
+                return orientation
+            }
+        }
+        return nil
+    }
+}
+
 public enum DeviceOrientation: String {
     case portrait
     case landscapeLeft
