@@ -47,18 +47,21 @@ struct Framer: ParsableCommand {
         // Automatically detect the correct device based on the screenshot's
         // size, if not provided by the user
         let device: Device
+        let orientation: DeviceOrientation
         if self.device == nil {
             let screenshotSize = CGSize(width: screenshot.width, height: screenshot.height)
             guard let detectedDevice = Devices.findBy(screenSize: screenshotSize) else {
                 print("Could not detect device based on screenshot size.")
                 throw ExitCode.failure
             }
-            device = detectedDevice
+            device = detectedDevice.0
+            orientation = detectedDevice.1
         } else {
             device = self.device!
+            orientation = self.device!.supportedOrientations.first!
         }
 
-        guard let framer = ScreenshotFramer(for: device) else {
+        guard let framer = ScreenshotFramer(for: device, orientation: orientation) else {
             print("Could not create screenshot framer.")
             throw ExitCode.failure
         }
@@ -69,7 +72,7 @@ struct Framer: ParsableCommand {
 
         try save(image: result, to: destinationPath)
 
-        print("Framed '\(device.name)' screenshot saved to '\(destinationPath)'.")
+        print("Framed '\(device.name)' (\(orientation)) screenshot saved to '\(destinationPath)'.")
     }
 
     func loadImage(at path: String) -> CGImage? {

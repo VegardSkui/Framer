@@ -16,9 +16,16 @@ final class FramerTests: XCTestCase {
         XCTAssertEqual(result?.screen, Devices.iphone12.screen)
     }
 
-    func testFindDeviceBySize() throws {
+    func testFindDeviceBySizePortrait() throws {
         let result = Devices.findBy(screenSize: CGSize(width: 1284, height: 2778))
         XCTAssertNotNil(result)
-        XCTAssertEqual(result?.name, "iPhone 12 Pro Max")
+        XCTAssertEqual(result?.0.name, "iPhone 12 Pro Max")
+        XCTAssertEqual(result?.1, .portrait)
+    }
+
+    func testFindDeviceBySizeLandscape() throws {
+        let result = Devices.findBy(screenSize: CGSize(width: 2778, height: 1284))
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.1, .landscapeLeft)
     }
 }

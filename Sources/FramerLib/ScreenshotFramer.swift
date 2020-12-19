@@ -20,34 +20,30 @@ enum FramingError: Error, CustomStringConvertible {
 }
 
 public class ScreenshotFramer {
-    let device: Device
+    /// The screen rect of the device in the given orientation.
+    let screen: CGRect
 
+    /// The frame image for the device in the given orientation.
     let frame: CGImage
 
-    public init?(for device: Device) {
-        guard let frameURL = Bundle.module.url(forResource: device.name,
-                                               withExtension: "png") else {
+    public init?(for device: Device, orientation: DeviceOrientation) {
+        guard let screen = device.screen[orientation] else {
             return nil
         }
 
-        guard let provider = CGDataProvider(url: frameURL as CFURL) else {
-            return nil
-        }
-        guard let frame = CGImage(pngDataProviderSource: provider,
-                                  decode: nil,
-                                  shouldInterpolate: false,
-                                  intent: .defaultIntent) else {
+        guard let tempFrame = device.frame[orientation],
+              let frame = tempFrame else {
             return nil
         }
 
-        self.device = device
+        self.screen = screen
         self.frame = frame
     }
 
     public func frame(_ screenshot: CGImage) throws -> CGImage {
         // Warn the user if the screenshot dimensions don't match the device's
         // screen size
-        if screenshot.width != Int(device.screen.width) || screenshot.height != Int(device.screen.height) {
+        if screenshot.width != Int(screen.width) || screenshot.height != Int(screen.height) {
             print("Warning: Screenshot dimensions do not match device screen size.")
         }
 
@@ -191,7 +187,7 @@ public class ScreenshotFramer {
 
         let frameRect = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         context.clip(to: frameRect, mask: screenMask)
-        context.draw(screenshot, in: device.screen)
+        context.draw(screenshot, in: screen)
 
         return context.makeImage()
     }
