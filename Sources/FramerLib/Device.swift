@@ -123,61 +123,7 @@ extension Devices {
             return nil
         }
 
-        return rotate(image, rotation)
-    }
-
-    private func rotate(_ image: CGImage, _ rotation: Rotation) -> CGImage? {
-        let swapWidthAndHeight = [.left, .right].contains(rotation)
-        let angle = CGFloat(rotation.rawValue)*0.5*CGFloat.pi
-
-        let width: Int
-        let height: Int
-        if swapWidthAndHeight {
-            width = image.height
-            height = image.width
-        } else {
-            width = image.width
-            height = image.height
-        }
-
-        guard let colorSpace = CGColorSpace(name: CGColorSpace.sRGB) else {
-            return nil
-        }
-
-        let bitmapInfo = CGBitmapInfo.alphaInfoMask.rawValue & CGImageAlphaInfo.premultipliedLast.rawValue
-
-        guard let context = CGContext(data: nil,
-                                      width: width,
-                                      height: height,
-                                      bitsPerComponent: 8,
-                                      bytesPerRow: 4*width,
-                                      space: colorSpace,
-                                      bitmapInfo: bitmapInfo) else {
-            return nil
-        }
-
-        // Move the origin to the center
-        context.translateBy(x: CGFloat(width)/2, y: CGFloat(height)/2)
-
-        context.rotate(by: angle)
-
-        if swapWidthAndHeight {
-            context.translateBy(x: -CGFloat(height)/2, y: -CGFloat(width)/2)
-        } else {
-            context.translateBy(x: -CGFloat(width)/2, y: -CGFloat(height)/2)
-        }
-
-        context.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
-
-        return context.makeImage()
-    }
-
-    private enum Rotation: Int {
-        // The backing int value is used to calculate the angle, see `rotate`.
-        case up = 0
-        case left = 1
-        case down = 2
-        case right = 3
+        return image.rotate(rotation)
     }
 }
 
