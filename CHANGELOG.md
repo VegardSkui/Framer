@@ -7,6 +7,10 @@
 - Support for all iPhone orientations (formerly portrait only)
 - Support for Apple Watch Series 6 44mm
 
+### Changed
+
+- Split framing and device listing into separate subcommands
+
 ## v0.1 - 2020-12-18
 
 ### Added
