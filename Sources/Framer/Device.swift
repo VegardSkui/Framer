@@ -14,6 +14,8 @@ enum Devices: Device, CaseIterable {
     case iphone12pro
     case iphone12promax
 
+    case watch6_44mm
+
     var name: String {
         switch self {
         case .iphone12:
@@ -24,6 +26,8 @@ enum Devices: Device, CaseIterable {
             return "iPhone 12 Pro"
         case .iphone12promax:
             return "iPhone 12 Pro Max"
+        case .watch6_44mm:
+            return "Apple Watch Series 6 44mm"
         }
     }
 
@@ -37,6 +41,9 @@ enum Devices: Device, CaseIterable {
             return CGRect(x: 100, y: 90, width: 1170, height: 2532)
         case .iphone12promax:
             return CGRect(x: 100, y: 100, width: 1284, height: 2778)
+        case .watch6_44mm:
+            return CGRect(x: 56, y: 205, width: 368, height: 448)
+
         }
     }
 

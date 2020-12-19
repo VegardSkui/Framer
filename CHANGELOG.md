@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED
+
+### Added
+
+- Support for Apple Watch Series 6 44mm
+
 ## v0.1 - 2020-12-18
 
 ### Added
