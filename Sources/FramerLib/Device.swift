@@ -186,7 +186,11 @@ public enum DeviceOrientation: String, CaseIterable {
 
     case portrait
     case upsideDown
+
+    /// Home button/indicator on the right side.
     case landscapeLeft
+
+    /// Home button/indicator on the left side.
     case landscapeRight
 
     /// Standard orientation for devices where only one orientation is supported.
